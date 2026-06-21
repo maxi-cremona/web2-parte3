@@ -15,7 +15,7 @@
 
     #                 endpoint        verbo            controller              metodo
     #GET
-    $router->addRoute('','','','');
+    $router->addRoute('noticias','GET','NoticiaApiController','getNoticias');
     $router->addRoute('noticias/:id','GET','NoticiaApiController','getNoticiaByID');
     
     $router->addMiddleware(new GuardMiddleware());
@@ -24,7 +24,7 @@
     $router->addRoute('noticias','POST','NoticiaApiController','addNoticia');
 
     #PUT
-    $router->addRoute('','','','');
+    $router->addRoute('noticias/:id','PUT','NoticiaApiController','updateNoticia');
 
     #DELETE
     $router->addRoute('noticias/:id','DELETE','NoticiaApiController','deleteNoticia');
