@@ -63,3 +63,13 @@ REQUEST
 GET /api/noticias?seccion=1
 
 Obtiene únicamente las noticias que pertenecen al ID de la sección indicada.
+
+
+Ordenamiento:
+
+REQUEST
+GET /api/noticias?sort=id&order=desc
+
+Parámetros
+sort: campo por el cual ordenar (disponibles todos los campos de la tabla noticia).
+order: asc | desc
