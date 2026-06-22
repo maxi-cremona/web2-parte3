@@ -44,21 +44,26 @@ class NoticiaApiController{
     }
 
     public function getNoticias($req, $res) {
-        //Si el usuario no ingreso un orden pongo ASC por defecto
-        $order = isset($_GET['order']) ? $_GET['order'] : 'ASC'; 
-        
-        //Si el usuario no ingreso un campo pongo ID por defecto
-        $field = isset($_GET['field']) ? $_GET['field'] : 'id_noticia';
+        // Capturamos los parámetros desde el objeto del Router ($req->query)
+        $sort = isset($req->query->sort) ? $req->query->sort : 'id_noticia';
+        $order = isset($req->query->order) ? strtoupper($req->query->order) : 'ASC';
+        $seccion = isset($req->query->seccion) ? $req->query->seccion : null;
 
-        // Valido para que no haya inyeccion de codigo
-        if ($order != 'ASC' && $order != 'DESC') {
+        // Validamos el sentido del ordenamiento para evitar inyecciones
+        if ($order !== 'ASC' && $order !== 'DESC') {
             $order = 'ASC';
         }
 
-        // Llamo al model pasandole el orden
-        $noticias = $this->noticiaModel->getAll($field, $order);
+        // Listado de columnas permitidas para ordenar de la tabla noticia
+        $columnasPermitidas = ['id_noticia', 'titulo', 'cuerpo', 'fecha', 'id_seccion_fk'];
+        if (!in_array($sort, $columnasPermitidas)) {
+            $sort = 'id_noticia';
+        }
 
-        // devuelvo la respuesta y el código 200
+        // Llamamos al modelo pasándole el filtro de sección si es que existe
+        $noticias = $this->noticiaModel->getAll($sort, $order, $seccion);
+
+        // Devuelvo la respuesta exitosa
         return $res->json($noticias, 200);
     }
 

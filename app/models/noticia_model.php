@@ -7,9 +7,22 @@ class NoticiaModel{
         $this->db = new PDO("mysql:host=".MYSQL_HOST .";dbname=".MYSQL_DB.";charset=utf8", MYSQL_USER, MYSQL_PASS);
     }
 
-    public function getAll($field, $order) {
-        $query = $this->db->prepare("SELECT * FROM noticia ORDER BY $field $order");
-        $query->execute();
+    public function getAll($sort, $order, $seccion = null) {
+        $sql = "SELECT * FROM noticia";
+        $params = [];
+
+        // Si el usuario mandó un id de sección para filtrar, inyectamos el WHERE
+        if ($seccion !== null) {
+            $sql .= " WHERE id_seccion_fk = ?";
+            $params[] = $seccion;
+        }
+
+        // Concatenamos de forma segura el ordenamiento validado del controlador
+        $sql .= " ORDER BY $sort $order";
+
+        $query = $this->db->prepare($sql);
+        $query->execute($params);
+        
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
