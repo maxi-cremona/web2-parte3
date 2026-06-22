@@ -73,3 +73,16 @@ GET /api/noticias?sort=id&order=desc
 Parámetros
 sort: campo por el cual ordenar (disponibles todos los campos de la tabla noticia).
 order: asc | desc
+
+
+Autenticación:
+
+Para los endpoints de agregar (POST), modificar (PUT) y eliminar (DELETE) se requiere estar autenticado como administrador mediante un token JWT.
+Obtener Token de Admin:
+
+REQUEST
+POST /api/auth/login
+Cabecera: Authorization (Basic Auth con "webadmin" y contrasenia "admin")
+
+Respuesta (ejemplo)
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBub3RpY2lhcy5jb20iLCJyb2wiOiJhZG1pbiJ9..."
